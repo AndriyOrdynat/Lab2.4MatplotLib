@@ -1,7 +1,5 @@
 import requests
-from datetime import datetime
 import matplotlib.pyplot as plt
-import pandas as pd
 
 class Client:
     def __init__(self, api_key):
@@ -27,15 +25,27 @@ class Client:
         
         result = {element: [] for element in elements}
         result['datetime'] = []
-        for day in data_js[step]:
 
-            result['datetime'].append(day['datetime'])
+        if step == 'days':
+            for day in data_js['days']:
+
+                result['datetime'].append(day['datetime'])
             
-            for element in elements:
-                if element in day:
-                    result[element].append(day[element])
-                else:
-                    result[element].append(None)
+                for element in elements:
+                    if element in day:
+                       result[element].append(day[element])
+                    else:
+                        result[element].append(None)
+
+        elif step == 'hours':
+            for hour in data_js['days'][0]['hours']:
+                result['datetime'].append(hour['datetime'])
+                
+                for element in elements:
+                    if element in hour:
+                        result[element].append(hour[element])
+                    else:
+                        result[element].append(None)
         
         return result
 
@@ -62,10 +72,9 @@ api_client = Client('XRWY5S7RPXQGZ7EA9HDPGWXHW')
 
 location = "Kyiv,Ukraine"
 start_date = '2025-05-01'
-end_date = '2025-05-2'
+end_date = '2025-05-1'
 
 weather_data = api_client.get_values(location, start_date, end_date, step='hours')
 
 plov = WeatherPlot()
 plov.plot(weather_data, title='Weather in Kyiv', ylabel='Values')
-

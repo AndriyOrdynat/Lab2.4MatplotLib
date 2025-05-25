@@ -71,10 +71,10 @@ class WeatherPlot:
 api_client = Client('XRWY5S7RPXQGZ7EA9HDPGWXHW')
 
 location = "Kyiv,Ukraine"
-start_date = '2025-05-01'
-end_date = '2025-05-1'
+start_date = '2025-05-03'
+end_date = '2025-05-03'
 
 weather_data = api_client.get_values(location, start_date, end_date, step='hours')
 
 plov = WeatherPlot()
-plov.plot(weather_data, title='Weather in Kyiv', ylabel='Values')
+plov.plot(weather_data, title=f'Weather in Kyiv at {start_date}', ylabel='Values')
